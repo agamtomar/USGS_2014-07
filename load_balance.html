@@ -1,0 +1,745 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <title>High Performance Computing</title>
+
+<style>
+@import url(css/stack.css);
+@import url(css/styles/default.css);
+@import url(css/ipython.css);
+@import url(css/custom.css);
+</style>
+
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body class="overview">
+
+<section>
+  <h1 style="text-align:center;margin-top: 50px;">Application Persepctive on <br> Load-Balancing</h1>
+
+<!--
+<img src="img/salt.png" style="margin-left: auto; margin-right: auto; margin-bottom:0;height:300px; display:block;">
+<a style="font-size: small; margin-left:700px;href="http://xkcd.com/">xkcd</a> -->
+
+  <div style="text-align:center">
+      <p >Monte Lunacek
+  </div>
+      <br>
+      <a style="font-size: small;" href="http://researchcomputing.github.io/USGS_2014-07/load_balance.html">http://researchcomputing.github.io/USGS_2014-07/load_balance.html</a>
+  </div>
+</section>
+
+
+
+
+<section>
+  <h2>HPC Landscape</h2>
+  <img src="https://s3.amazonaws.com/research_computing_tutorials/MTC.svg" style="margin:auto; auto;display:block; height: 525px;">
+  <p class="small">Ioan Raicu, <a href="http://datasys.cs.iit.edu/publications/2009_PhD-UChicago_dissertation.pdf">Many-Task Computing: Bridging the Gap between High Throughput Computing and High Performance Computing</a></p>
+</section>
+
+
+
+
+<section class="subtitle">
+    <h1>Technology</h1>
+
+    <img src="img/parallel.png" style="margin:auto; auto;display:block; height: 425px;">
+
+
+    <ul>
+        <li> Focus on the analysis
+            <ul>
+                <li> How do I run 10,000 simulations?
+                <li> How do I analyze my data?
+            </ul>
+    </ul>
+
+<p style="margin-top: 250px">What tools do you currently use?
+
+</section>
+
+
+
+
+<!-- <section class="subtitle">
+<img src="img/monty-python.png" style="margin:20px auto;display:block; height00px"  alt="monty-python.jpg">
+</section> -->
+
+
+
+
+<!-- <section>
+<div>
+<h2>Numpy and Pytables</h2>
+
+<pre class="python"><code>import sys
+import numpy as np
+import tables as tb
+
+def read_h5(filename):
+    with tb.openFile(filename, mode = "r") as h5:
+        return h5.root.x.read()
+
+if __name__ == '__main__':
+
+    A = read_h5(sys.argv[1])
+    B = read_h5(sys.argv[2])
+    C = np.dot(A,B)
+
+</code></pre>
+
+</div>
+</section>
+
+<section>
+<div>
+<h2>Compare</h2>
+<img src="img/matrix_multiply_compare.png" style="margin:5px auto; height:500px; display:block;">
+</div>
+</section> -->
+
+
+
+<!-- <section>
+<h2>University of Colorado</h2>
+<ul>
+<li>Some tightly-coupled MPI codes</li>
+<li>Many simulations
+<ul>
+  <li>Monte Carlo, parameter scans, UQ, parameter optimization</li>
+  </ul>
+</li>
+<li>Diverse computing backgrounds
+  <ul>
+  <li>Geography, Ecology and Evolutionary Biology, Microbial Ecology,
+    Geology, Astronomy</li>
+  </ul>
+</li>
+<li>Range of computational experience</li>
+<li>Range of software</li>
+</ul>
+</section> -->
+
+
+
+<!-- <section>
+    <h1>Outline</h1>
+
+    <ul>
+        <li> Load-balancing abstraction
+        <li> Functional programming (and Python)
+        <li> QIIME: Addressing different needs
+        <li> Why you should know about spark
+    </ul>
+
+<p style="margin-top: 250px;">Hope you are inspired to use these tools!
+
+</section> -->
+
+<!-- <section class="subtitle">
+<img src="img/parallel.png" style="margin:30px auto;display:block; width:800px"  alt="monty-python.jpg">
+<h2>What is Many-task Computing?</h2>
+</section> -->
+
+
+<section>
+<h1>Many Simulations</h1>
+<blockquote style="">
+  How do I run many simulations?
+</blockquote>
+<!-- <p>Matlab</p>
+<pre class="bash"><code>matlab -nodesktop -nosplash -nodisplay -r forJanusOpt > output
+</code></pre> -->
+<br>
+<p>Matlab</p>
+<pre class="bash"><code>matlab -nodesktop -nosplash -nodisplay -r forJanusOpt
+</code></pre>
+
+<ul>
+  <li>Parameters from a file</li>
+  <li>May need separate directory</li>
+</ul>
+
+</section>
+
+
+
+<section>
+<!-- <h1>Many Simulations</h1> -->
+<!-- <p>Matlab</p>
+<pre class="bash"><code>matlab -nodesktop -nosplash -nodisplay -r forJanusOpt > output
+</code></pre> -->
+
+<p>IDL</p>
+<pre class="bash"><code>sh /home/chmo1906/idl_wrapper.sh 020000 MHD_MEAN_80G MHD_MEAN
+</code></pre>
+<p style="font-size: small;"><code>idl_wrapper.sh</code>
+<pre class="bash"><code>#!/bin/bash
+job_name=Spectrum_$2_6x3Mn_8km_ng_$1
+cd /lustre/janus_scratch/chmo1906/rhsc3d/run_$3_6x3Mm_8km_ng$1
+
+idl << EOF
+
+.r readall
+$job_name = SPECTRUM
+SAVE, $job_name, FILENAME = '$2_6x3Mm_8km_ng_$1.SAV'
+SAVE, $job_name, FILENAME = '/projects/chmo1906/IDL/$2_6x3Mm_8km_ng_$1.SAV'
+exit
+
+EOF
+</code></pre>
+
+</section>
+
+
+
+
+<section>
+<h2>Approach</h2>
+
+<blockquote style="margin-top: 100px;">
+  What's the most efficient way to run my simulation?
+</blockquote>
+
+<ul>
+  <li>Moab, SLURM, or Condor</li>
+  <li>Bash, pbsdsh, or Falkon</li>
+  <li>MPI (mpi4py): not <em>always</em> what we want</li>
+  <li>Python
+    <ul>
+      <li>SAGA BigJob</li>
+      <li>multiprocessing: simple and included
+      <li>Message broker: IPython parallel, Celery</li>
+    </ul>
+  </li>
+  <li>And many, many more...<a href="https://wiki.python.org/moin/ParallelProcessing">Parallel Processing Python Wiki</a></li>
+</ul>
+</section>
+
+
+<section>
+    <h1> <code>bash</code></h1>
+
+    <pre class="bash"><code>
+count_base=0
+for i in {1..N}
+do
+    for j in {1..$np}
+    do
+        b=$(($count_base + $j))
+        ./simulator --trial $b &
+    done
+wait
+count_base=$(( $count_base + $np))
+done
+    </code></pre>
+<!-- <p>or use <code>map</code> -->
+<p> Limited to a <b>single node</b>
+
+</section>
+
+<section>
+    <h1> <code>pbsdsh</code></h1>
+
+    <pre class="bash"><code>
+for i in {1..N}
+do
+    pbsdsh wrapper.sh $count
+    count=$(( $count + 12))
+done
+    </code></pre>
+
+<pre class="bash"><code>
+#!/bin/bash
+PATH=$PBS_O_WORKDIR:$PBS_O_PATH
+TRIAL=$(($PBS_VNODENUM + $1))
+./simulator --trial $TRIAL
+
+</code></pre>
+<!-- <p>or use <code>map</code> -->
+<p> A little <b>painful</b>
+
+</section>
+
+
+
+
+<section>
+  <h1>A little <b>inefficient</b></h1>
+<!--   <p class="small"><a href="http://bl.ocks.org/mlunacek/6590169">http://bl.ocks.org/mlunacek/6590169</a></p> -->
+<iframe src="http://bl.ocks.org/mlunacek/raw/6590169"></iframe>
+</section>
+
+
+
+<section>
+<h1>Load balancing</h1>
+
+<p>Write down what you want to do
+<pre><code>sh /home/chmo1906/run_scripts/idl_wrapper.sh 016000 MHD_MEAN_80G MHD_MEAN
+sh /home/chmo1906/run_scripts/idl_wrapper.sh 017000 MHD_MEAN_80G MHD_MEAN
+sh /home/chmo1906/run_scripts/idl_wrapper.sh 018000 MHD_MEAN_80G MHD_MEAN
+...
+
+sh /home/chmo1906/run_scripts/idl_wrapper.sh 100000 MHD_MEAN_80G MHD_MEAN
+</code></pre>
+
+<p style="margin-top: 50px;">Pass it to the <code>load_balance</code>
+<pre><code>module load load_balance
+
+mpirun load_balance -f /home/chmo1906/cmdlist</code></pre>
+
+
+<p style="margin-top:100px;">
+<a  href="https://gist.github.com/mlunacek/71a4075451b999b6b3bd">load_balance.py</a>:
+Successful... can create a lot of data.
+
+
+</section>
+
+<section>
+<h1>QIIME</h1>
+
+<blockquote>
+Sometimes one of the parallel jobs will fail and its output files will not be written to the expected location. --<a href="http://qiime.org/tutorials/parallel_qiime.html">qiime parallel</a>
+</blockquote>
+
+
+<p style="margin-top:50px;">Example workflow
+<img src="img/qiime-workflow.png" style="margin:5px auto; height:100px; display:block;">
+
+<div style="margin-top: 50px; clear: both;">
+<div style="width:320px; float: left;">
+<p>Different requirements
+    <ul>
+        <li> Fault-tolerance
+        <li> Elasticity (<a href="http://nbviewer.ipython.org/github/mlunacek/notebooks/blob/master/saga_ipython_parallel.ipynb">example</a>)
+    </ul>
+</div>
+<div>
+<img src="img/vw.jpg" style="margin:5px auto; height:200px; display:block; float: right;">
+</div>
+</div>
+
+</section>
+
+<section>
+<h2>Python</h2>
+<ul>
+<li>Flexible, powerful programming language</li>
+<li>Free and open</li>
+<li>Large community</li>
+<li><strong>Abstraction</strong></li>
+<li>Some packages offer different characteristics
+  <ul>
+    <li>Fault-tolerance</li>
+    <li>Elasticity</li>
+    <li>Persistence</li>
+</li>
+</ul>
+</section>
+
+<section>
+<h2>Python <strong>Success</strong> Stories</h2>
+
+
+<ul>
+    <li>Geology optimization with <a href="https://www.lri.fr/~hansen/cmaes_inmatlab.html"> CMAES </a>
+        and <a href="http://ipython.org/ipython-doc/dev/parallel/"> IPython Parallel </a>
+    <li>Large data workflows with <a href="http://ipython.org/ipython-doc/dev/parallel/"> IPython Parallel </a>
+    <li>Improved biological workflow with <a href="http://ipython.org/ipython-doc/dev/parallel/"> IPython Parallel </a>
+
+  <li>~500,000 simulations on ~7,000 cores with <a href="http://mpi4py.scipy.org/">mpi4py </a></li>
+<li>Geography optimization and simulation <a href="https://code.google.com/p/scoop/"> Scoop </a>
+    and <a href="https://code.google.com/p/deap/"> DEAP </a></li>
+  <li>Wrapped CFD with
+  <a href="http://www.scipy.org/F2py"> f2py</a> and
+  <a href="http://ipython.org/ipython-doc/dev/parallel/"> IPython Parallel </a></li>
+  <li>Packaged multiple MPI tasks with
+  <a href="http://jinja.pocoo.org/docs/"> Jinja2 </a></li>
+  <li>Benchmarking:
+<a href="http://mpi4py.scipy.org/">mpi4py </a>,
+<a href="http://discoproject.org/"> pandas </a>,
+<a href="http://jinja.pocoo.org/docs/"> Jinja2 </a>,
+<a href="https://www.djangoproject.com/"> Django </a></li>
+   <li>Complex worklows with <a href="http://saga-project.github.io/saga-python/">SAGA</a>
+  <li> Web API with <a href="http://flask.pocoo.org/">flask</a>
+
+</ul>
+</section>
+
+<section>
+  <h1>IPython Parallel</h1>
+  <img src="img/ipython.png" style="margin:20px auto; display: block;">
+
+
+<pre class="python"><code>c = Client()
+print c.ids #list of engines</code></pre>
+
+<p>Fault-tolerance, elasticity, and persistence
+</section>
+
+
+<section>
+    <h1>The <code>map</code> abstraction</h1>
+
+    <blockquote>
+        Python acquired lambda, reduce, filter and map, courtesy of a Lisp hacker who missed them and submitted working patches. -Guido van Rossum
+    </blockquote>
+
+    <pre class="python"><code>def square(x):
+    return x*x
+
+numbers = [1,2,3]
+
+def map_squares(nums):
+    res = []
+    for x in nums:
+        res.append( square(x) )
+    return res</code></pre>
+<!-- <p>or use <code>map</code> -->
+<p> or...
+<pre class="python"><code>results = map(square, numbers)</code></pre>
+
+<p><code>map</code> is the key to parallelism in python
+
+</section>
+
+
+
+
+<section>
+
+    <p>Serial code</p>
+<pre class="python"><code>results = map(square, numbers)</code></pre>
+
+<p>IPython Parallel</p>
+<pre class="python"><code>c = Client()
+lb = c.load_balanced_view()
+lb.retries = len(c.ids)
+
+results = lb.map(square, numbers)</code></pre>
+
+<p>Multiprocessing
+<pre class="python"><code>from multiprocessing import Pool
+pool = Pool(5)
+results = pool.map(square, numbers)</code></pre>
+
+<p>Scoop
+<pre class="python"><code>from scoop import futures
+
+results = futures.map(square, numbers)</code></pre>
+
+
+<!-- <p>Advantages
+<ul>
+<li>Fault-tolerance
+<li>Elasticity
+<li>Persistence
+</ul> -->
+</section>
+
+
+
+
+
+<section>
+  <h1>Schedules and Failures</h1>
+  <p class="small"><a href="http://bl.ocks.org/mlunacek/6590169">http://bl.ocks.org/mlunacek/6590169</a></p>
+<iframe src="http://bl.ocks.org/mlunacek/raw/6590169"></iframe>
+</section>
+
+
+<!--
+
+<section>
+<h2><strong>Weak</strong> Scaling</h2>
+
+<p>Compare: mpi4py, IPython Parallel, Celery</p>
+
+<p>What recommendations can we offer?</p>
+
+<p>Best case scenario</p>
+<ul>
+<li>Small messages, limited file IO, sleep</li>
+<li>No contention</li>
+</ul>
+
+<p>Weak scaling</p>
+<ul><li>task = 10 * number of cores</li>
+<li>up to 12,288 cores</li>
+<li>time uniform(27,33) seconds</li>
+</ul>
+</section> -->
+
+<!-- <section>
+<h2>Initialization</h2>
+<img src="img/pres_init_time.png" style="margin:5px auto; height:550px; display:block;"  alt="some_text">
+</section>
+
+<section>
+<h2>Weak scaling time</h2>
+<img src="img/pres_time.png" style="margin:5px auto; height:550px; display:block;">
+</section> -->
+
+<section>
+<h2>Weak Scaling Efficiency</h2>
+<img src="img/pres_efficiency.png" style="margin:5px auto; height:500px; display:block;">
+<p class="small">Monte Lunacek <em>et al.</em>
+<a href="http://ieeexplore.ieee.org/xpl/login.jsp?tp=&arnumber=6702678&url=http%3A%2F%2Fieeexplore.ieee.org%2Fxpls%2Fabs_all.jsp%3Farnumber%3D6702678">
+The scaling of many-task computing approaches in python on cluster supercomputers</a></p>
+</section>
+
+<section>
+  <h1>Notebook Examples</h1>
+</section>
+
+<section>
+    <h1>MapReduce</h1>
+
+    <ul>
+<!--     <li>Programming framework for processing large data sets.
+    <li>Based on <em>functional</em> <code>map</code> and <code>reduce</code> -->
+    <li>Widely used: scalable, fault-tolerant
+    </ul>
+
+<!--     <p>But...
+    <li>Inefficient at multi-pass
+    <li>Lots of disk operations
+    <li>Not ideal for HPC -->
+
+    <img src="img/mapreduce.png" style="margin:5px auto; height:450px; display:block;">
+</section>
+
+
+<section>
+    <h1>Spark <a href="http://spark.apache.org/"><span style="font-size: 70%">spark.apache.org</span></a></h1>
+
+
+    <p>Brings the <em>algorithm</em> to the <b>data</b></p>
+
+    <img src="img/spark.png" style="margin:5px auto; height:450px; display:block;">
+
+
+    <p><b>Interactive</b> for scala and python
+
+</section>
+
+
+<section>
+    <h1>Word count</h1>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">
+In&nbsp;[43]:
+</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="k">print</span> <span class="n">rdd</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+[u&apos;to&apos;, u&apos;be&apos;, u&apos;or&apos;, u&apos;not&apos;, u&apos;to&apos;, u&apos;be&apos;]
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">
+In&nbsp;[44]:
+</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="n">rdd</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">map</span><span class="p">(</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="k">print</span> <span class="n">rdd</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+[(u&apos;to&apos;, 1), (u&apos;be&apos;, 1), (u&apos;or&apos;, 1), (u&apos;not&apos;, 1), (u&apos;to&apos;, 1), (u&apos;be&apos;, 1)]
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">
+In&nbsp;[45]:
+</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="n">rdd</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">reduceByKey</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">rdd</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+[(u&apos;not&apos;, 1), (u&apos;be&apos;, 2), (u&apos;or&apos;, 1), (u&apos;to&apos;, 2)]
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<p>And add a sort..
+
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">
+In&nbsp;[46]:
+</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="n">rdd</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span><span class="o">.</span><span class="n">sortByKey</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">rdd</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+[(2, u&apos;be&apos;), (2, u&apos;to&apos;), (1, u&apos;or&apos;), (1, u&apos;not&apos;)]
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section>
+    <h1>Lazy evaluation</h1>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">
+In&nbsp;[50]:
+</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="n">results</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">map</span><span class="p">(</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>\
+            <span class="o">.</span><span class="n">reduceByKey</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>\
+            <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>\
+            <span class="o">.</span><span class="n">sortByKey</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>\
+            <span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+
+<span class="k">print</span> <span class="n">results</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+[(2, u&apos;be&apos;), (2, u&apos;to&apos;), (1, u&apos;or&apos;), (1, u&apos;not&apos;)]
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+</section>
+
+
+<section>
+    <h1 >Conclusions</h1>
+    <ul>
+        <li> Landscape is changing
+            <ul>
+            <li> New tools, techniques, and languages
+            <li> Fault-tolerance
+            </ul>
+        <li> Python makes parallel computing easier
+            <ul>
+                <li>Intel MKL, mpi4py, map, Spark
+            </ul>
+        <li> Technology that supports your work
+    </ul>
+
+
+</section>
+
+<section>
+    <h1 style="text-align: center; margin-top: 200px; margin-bottom: 200px;">Thank you!</h1>
+
+
+    <p><a href="https://gist.github.com/mlunacek/71a4075451b999b6b3bd">load_balance.py</a>
+    <p><a href="https://github.com/mlunacek/ipython_tools">IPython tools</a>: Scripts for lauching IPython on a cluster
+    <p><a href="https://github.com/ResearchComputing/remotenb">Remotenb </a>: Run IPython notebooks on a cluster
+    <p><a href="http://nbviewer.ipython.org/github/mlunacek/notebooks/blob/master/saga_ipython_parallel.ipynb">Saga IPython Example</a> Elastic resources
+
+
+    <p><a href=""></a>
+    <p><a href=""></a>
+    <p><a href=""></a>
+
+
+</section>
+
+
+
+<script src="js/d3.v3.min.js"></script>
+<script src="js/stack.v0.min.js"></script>
+</body>
+</html>
