@@ -16,14 +16,18 @@
 <body class="overview">
 
 <section>
-  <h1 style="text-align:center;margin-top: 50px;">Application Persepctive on <br> Load-Balancing</h1>
+  <h1 style="text-align:center;margin-top: 50px;">High-Throughput Computing and Load Balancing</h1>
 
 <!--
 <img src="img/salt.png" style="margin-left: auto; margin-right: auto; margin-bottom:0;height:300px; display:block;">
 <a style="font-size: small; margin-left:700px;href="http://xkcd.com/">xkcd</a> -->
 
   <div style="text-align:center">
+      <p> Peter Ruprecht <br> and
       <p >Monte Lunacek
+        <br>
+      <p>Research Computing
+
   </div>
       <br>
       <a style="font-size: small;" href="http://researchcomputing.github.io/USGS_2014-07/load_balance.html">http://researchcomputing.github.io/USGS_2014-07/load_balance.html</a>
@@ -33,12 +37,65 @@
 
 
 
+
+
+<section>
+  <h1>High Throughput Computing</h1>
+  <ul>
+    <li>
+      Traditional HPC jobs use a lot of nodes (wide)
+
+<li>There are also workflows that consist of large number of small jobs
+<li><em>Small</em> may mean short in duration or else involving a small number of processors
+
+<li>Workflows with many small jobs are often referred to as <em>High Throughput Computing</em>
+
+  </ul>
+</section>
+
+<section>
+  <h1>System Challenges</h1>
+  <ul>
+  <li>Job scheduler needs to keep track of all queued jobs and run them efficiently
+
+<li>When one user submits 50,000 jobs at once, the scheduler is taxed
+<li>Some HPC sites allow only a fixed (small) number of jobs per user
+<li>There are startup and wind-down tasks for each job
+<li>If a job only lasts a minute, the overhead from these tasks is substantial
+
+  </ul>
+</section>
+
+
+<section>
+<h1>Possible Solutions</h1>
+
+<!-- <blockquote style="margin-top: 100px;">
+  What's the most efficient way to run my simulation?
+</blockquote>
+ -->
+<ul>
+  <li>Moab, SLURM, or Condor</li>
+  <li>Open Science Grid</li>
+  <li>Bash, pbsdsh, or Falkon</li>
+  <li>MPI (mpi4py): not <em>always</em> what we want</li>
+  <li>Python
+    <ul>
+      <li>SAGA BigJob</li>
+      <li>multiprocessing: simple and included
+      <li>Message broker: IPython parallel, Celery</li>
+    </ul>
+  </li>
+  <li>And many, many more...<a href="https://wiki.python.org/moin/ParallelProcessing">Parallel Processing Python Wiki</a></li>
+</ul>
+</section>
+
+
 <section>
   <h2>HPC Landscape</h2>
   <img src="https://s3.amazonaws.com/research_computing_tutorials/MTC.svg" style="margin:auto; auto;display:block; height: 525px;">
   <p class="small">Ioan Raicu, <a href="http://datasys.cs.iit.edu/publications/2009_PhD-UChicago_dissertation.pdf">Many-Task Computing: Bridging the Gap between High Throughput Computing and High Performance Computing</a></p>
 </section>
-
 
 
 
@@ -196,27 +253,7 @@ EOF
 
 
 
-<section>
-<h2>Approach</h2>
 
-<blockquote style="margin-top: 100px;">
-  What's the most efficient way to run my simulation?
-</blockquote>
-
-<ul>
-  <li>Moab, SLURM, or Condor</li>
-  <li>Bash, pbsdsh, or Falkon</li>
-  <li>MPI (mpi4py): not <em>always</em> what we want</li>
-  <li>Python
-    <ul>
-      <li>SAGA BigJob</li>
-      <li>multiprocessing: simple and included
-      <li>Message broker: IPython parallel, Celery</li>
-    </ul>
-  </li>
-  <li>And many, many more...<a href="https://wiki.python.org/moin/ParallelProcessing">Parallel Processing Python Wiki</a></li>
-</ul>
-</section>
 
 
 <section>
