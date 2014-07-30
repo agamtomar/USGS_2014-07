@@ -1,0 +1,327 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <title>High Performance Computing</title>
+
+<style>
+@import url(css/stack.css);
+@import url(css/styles/default.css);
+@import url(css/ipython.css);
+@import url(css/custom.css);
+</style>
+
+<script src="js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body class="overview">
+
+<section>
+  <h1 style="text-align:center;margin-top: 50px;">10 Ways to Make Great Scientific Visualizations</h1>
+  <img src="img/intro.png" style="margin:20px auto;display:block; height:100px">
+
+  <div style="text-align:center">
+      <p >Monte Lunacek
+  </div>
+      <br>
+      <a style="font-size: small;" href="http://researchcomputing.github.io/USGS_2014-07/scientific_visualization.html">http://researchcomputing.github.io/USGS_2014-07/scientific_visualization.html</a>
+  </div>
+</section>
+
+
+<section>
+  <h2>References</h2>
+  <p><a href="http://www.amazon.com/Show-Me-Numbers-Designing-Enlighten/dp/0970601972/ref=dp_ob_title_bk">Show Me the Numbers</a> Stephen Few </p>
+  <p><a href="http://www.amazon.com/Data-Points-Visualization-Means-Something/dp/111846219X">Data Points: Visualization That Means Something</a> Nathan Yau </p>
+
+  <p><a href="http://www.amazon.com/The-Visual-Display-Quantitative-Information/dp/0961392142/ref=pd_sim_b_5?ie=UTF8&refRID=0V1494012B2DRG21V1CP">The Visual Display of Quantitative Information</a> Edward R. Tufte</p>
+  <p>Several examples from <a href="http://wtfviz.net/">http://wtfviz.net</a>
+</section>
+
+
+<section>
+  <h1>What is a good visualization?</h1>
+
+  <blockquote>
+    Representation of the data that helps you see what you otherwise would have been blind to. -Nathan Yao
+  </blockquote>
+<br>
+  <p>Fundamental challenges
+    <ul>
+      <li> What kind of visualization?
+      <li> Making the visualization clear.
+    </ul>
+<br>
+  <p> We must understand <b>visual perception </b> in order to communicate effectively.
+  </section>
+
+<section>
+  <h1>Coffee
+  <img src="img/vis_coffee.png" style="margin:20px auto;display:block; height:500px;"  alt="monty-python.jpg">
+  <a style="font-size: small;" href="http://lokeshdhakar.com/coffee-drinks-illustrated/">source: http://lokeshdhakar.com</a>
+  </section>
+
+<section class="subtitle">
+  <h1>Ocean surface currents</h1>
+<img src="img/vis_starrynight.png" style="margin:20px auto;display:block; height:500px;"  alt="monty-python.jpg">
+<a style="font-size: small;" href="http://svs.gsfc.nasa.gov/cgi-bin/details.cgi?aid=3827">source: NASA</a>
+</section>
+
+
+<section class="subtitle">
+  <h1 style="text-align:center;margin-top: 150px;">Visual Perception
+</section>
+
+<section>
+  <h1>Which is bulging outwards?
+  <img src="img/vis_buttons.png" style="margin:20px auto;display:block; height:300px"  alt="monty-python.jpg">
+  <a style="font-size: small;" href="http://www.amazon.com/Show-Me-Numbers-Designing-Enlighten/dp/0970601972/ref=dp_ob_title_bk">Show Me the Numbers, Steven Few</a>
+</section>
+
+<section>
+  <h1>How many number 1's do you see?
+  <img src="img/vis_numbers.png" style="margin:20px auto;display:block; height:200px"  alt="monty-python.jpg">
+</section>
+
+<section>
+  <h1>Directing readers attention...
+  <img src="img/vis_hightlight_numbers.png" style="margin:20px auto;display:block; height:200px"  alt="monty-python.jpg">
+</section>
+
+<section>
+  <h1>How much darker is the square on the left vs the right?
+<br>
+<a style="font-size: small;" href="http://www.amazon.com/Show-Me-Numbers-Designing-Enlighten/dp/0970601972/ref=dp_ob_title_bk">Show Me the Numbers, Steven Few</a>
+<img src="img/vis_color_diff.png" style="margin:20px auto;display:block; height:200px"  alt="monty-python.jpg">
+
+</section>
+
+<section>
+  <h1>How much bigger is the large circle?
+<br>
+<img src="img/vis_circle.png" style="margin:20px auto;display:block; height:300px"  alt="monty-python.jpg">
+<br>
+<br>
+<a style="font-size: small;" href="http://www.amazon.com/Show-Me-Numbers-Designing-Enlighten/dp/0970601972/ref=dp_ob_title_bk">Show Me the Numbers, Steven Few</a>
+</section>
+
+
+<section class="subtitle">
+  <h1 style="text-align:center;margin-top: 50px;">16
+</section>
+
+
+<section>
+  <h1>Visual Attributes</h1>
+
+<p>Preattentive attributes (Few) or visual clues (Yao)
+
+<ul>
+  <li> 2D Position
+  <li> Length
+  <li> Shape
+  <li> Size
+  <li> Orientation (direction)
+  <li> Color hue
+  <li> Color intensity
+</ul>
+
+</section>
+
+
+<section>
+<br>
+<img src="img/vis_attributes.png" style="margin:20px auto;display:block; height:400px"  alt="monty-python.jpg">
+<br>
+<br>
+<a style="font-size: small;" src="http://www.amazon.com/Data-Points-Visualization-Means-Something/dp/111846219X">Data Points: Visualization That Means Something, Nathan Yau</a>
+</section>
+
+<section>
+<h1> Quantitative Value?</h1>
+
+<ul>
+    <li> 2D Position <b>yes</b>
+    <li> Length <b>yes</b>
+    <li> Shape <b>no</b>
+    <li> Size <b>limited</b>
+    <li> Orientation (direction) <b>no</b>
+    <li> Color hue <b>no</b>
+    <li> Color intensity <b>limited</b>
+  </ul>
+
+</section>
+
+
+<section class="subtitle">
+  <h1 style="text-align:center;margin-top: 150px;">Examples
+</section>
+
+<section>
+  <img src="img/vis_wtf_1.png" style="margin:20px auto;display:block; height:600px">
+  <p style="font-size: small;">http://wtfviz.net/</p>
+</section>
+
+<section>
+  <img src="img/vis_wtf_2.png" style="margin:20px auto;display:block; height:300px">
+  <p style="font-size: small;">http://wtfviz.net/</p>
+</section>
+
+<section>
+  <p> We cannot accurately interpret quantitative values from <b>area</b>
+  <img src="img/vis_ex_few_pie.png" style="margin:20px auto;display:block; height:420px">
+  <p style="font-size: small;">Show Me the Numbers, Few</p>
+</section>
+
+<section>
+    <img src="img/vis_ex_few_pie2.png" style="margin:20px auto;display:block; height:250px">
+    <p><b>Length</b> is easier.
+    <img src="img/vis_ex_few_bar1.png" style="margin:20px auto;display:block; height:250px">
+  <p style="font-size: small;">Show Me the Numbers, Few</p>
+</section>
+
+<section>
+  <img src="img/vis_wtf_3.png" style="margin:20px auto;display:block; height:300px">
+  <p style="font-size: small;">http://wtfviz.net/</p>
+</section>
+
+<section>
+  <p> What do the <b>color hues</b> represent?</b>
+  <img src="img/vis_ex_few_barcolor.png" style="margin:20px auto;display:block; height:220px">
+  <p style="font-size: small;">Show Me the Numbers, Few</p>
+</section>
+
+<section>
+  <img src="img/vis_wtf_4.png" style="margin:20px auto;display:block; height:300px">
+  <p style="font-size: small;">http://wtfviz.net/</p>
+</section>
+
+
+<section>
+  <img src="img/vis_wtf_5.png" style="margin:20px auto;display:block; height:300px">
+  <p style="font-size: small;">http://wtfviz.net/</p>
+</section>
+
+<section>
+  <img src="img/vis_ex_color.png" style="margin:20px auto;display:block; height:400px">
+</section>
+
+<section>
+  <p> <b>Color intensity</b> may be more clear.
+  <img src="img/vis_ex_color_fix.png" style="margin:20px auto;display:block; height:400px">
+</section>
+
+<!-- <section>
+  <img src="img/vis_matplotlib.png" style="margin:20px auto;display:block; height:400px">
+  <p style="font-size: small;">http://matplotlib.org/</p>
+</section> -->
+
+<section>
+  <img src="img/vis_ex_few1.png" style="margin:20px auto;display:block; height:400px">
+  <p style="font-size: small;">Show Me the Numbers, Few</p>
+</section>
+
+<section>
+  <p> Misrepresenting <b>Length</b>
+  <img src="img/vis_ex_few1_fix.png" style="margin:20px auto;display:block; height:400px">
+  <p style="font-size: small;">Show Me the Numbers, Few</p>
+</section>
+
+
+<section class="subtitle">
+  <h1 style="text-align:center;margin-top: 150px;">10 Ways to Make Great Visualizations
+</section>
+
+
+
+
+<section>
+  <h1>1: Show the data</h1>
+    <blockquote>Above all else show the data. -Edward Tufte</blockquote>
+
+      <img src="img/vis_ex_few3d.png" style="margin:20px auto;display:block; height:400px">
+      <p style="font-size: small;">Show Me the Numbers, Few</p>
+</section>
+
+<section>
+  <h1>2: When possible, use length or 2D position to encode values</h1>
+
+      <img src="img/vis_rule2.png" style="margin:20px auto;display:block; height:400px">
+      <p style="font-size: small;">Show Me the Numbers, Few</p>
+</section>
+
+<section>
+  <h1>3: Understand visual perception limits</h1>
+
+      <img src="img/vis_rule3.png" style="margin:20px auto;display:block; height:400px">
+      <p style="font-size: small;">Show Me the Numbers, Few</p>
+</section>
+
+<section>
+  <p>How many dimensions?</p>
+
+      <img src="img/vis_rule3b.png" style="margin:20px auto;display:block; height:500px">
+      <p style="font-size: small;">Data Points, Yao</p>
+</section>
+
+<section>
+  <iframe src="http://bost.ocks.org/mike/nations/"></iframe>
+</section>
+
+
+<section>
+  <h1>4: Avoid 3D</h1>
+
+      <img src="img/vis_rule4.png" style="margin:20px auto;display:block; height:400px">
+      <p style="font-size: small;">Show Me the Numbers, Few</p>
+</section>
+
+
+<section>
+  <h1>5: Reduce non-data ink</h1>
+      <img src="img/vis_rule5.png" style="margin:20px auto;display:block; height:200px">
+      <img src="img/vis_rule5b.png" style="margin:20px auto;display:block; height:300px">
+      <p style="font-size: small;">Show Me the Numbers, Few</p>
+      <p style="font-size: small;">Tufte</p>
+</section>
+
+<section>
+      <img src="img/vis_rule5c.png" style="margin:20px auto;display:block; height:250px">
+      <p style="font-size: small;">Data Points, Yao</p>
+</section>
+
+<section>
+  <h1>6: Emphasize data ink</h1>
+      <img src="img/vis_rule_dog.png" style="margin:20px auto;display:block; height:500px">
+      <p style="font-size: small;">Show Me the Numbers, Few</p>
+</section>
+
+<section>
+  <h1>7: Consider closure </h1>
+      <img src="img/vis_rule6.png" style="margin:20px auto;display:block; height:400px">
+      <p style="font-size: small;">Show Me the Numbers, Few</p>
+</section>
+
+<section>
+  <h1>8: Always put time-series on the x-axis.</h1>
+      <img src="img/vis_rule8.png" style="margin:20px auto;display:block; height:500px">
+      <p style="font-size: small;">Data Points, Yao</p>
+</section>
+
+
+<section>
+  <h1>Conclusion</h1>
+
+  <ul>
+    <li> Guidlines
+    <li> Goal: Understand visual perception and emphasize data
+  </ul>
+
+</section>
+
+
+
+
+<script src="js/d3.v3.min.js"></script>
+<script src="js/stack.v0.min.js"></script>
+</body>
+</html>
