@@ -1689,7 +1689,396 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="movies">Movies</h2>
+<h1 id="Aggregate-operations-and-Movies">Aggregate operations and Movies<a class="anchor-link" href="#Aggregate-operations-and-Movies">&#182;</a></h1>
+</div>
+</div>
+</div>
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Groupby-operation"><code>Groupby</code> operation<a class="anchor-link" href="#Groupby-operation">&#182;</a></h2>
+</div>
+</div>
+</div>
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">
+In&nbsp;[5]:
+</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">
+In&nbsp;[6]:
+</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="n">hamlet</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&#39;data&#39;</span><span class="p">,</span><span class="s">&#39;hamlet.txt&#39;</span><span class="p">)</span>
+<span class="n">words</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">r&#39;\w+&#39;</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">hamlet</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">
+In&nbsp;[14]:
+</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="n">num_words</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">words</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;word&#39;</span><span class="p">,</span><span class="s">&#39;count&#39;</span><span class="p">])</span>
+<span class="n">num_words</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">
+    Out[14]:</div>
+
+<div class="output_html rendered_html output_subarea output_pyout">
+<div style="max-height:1000px;max-width:1500px;overflow:auto;">
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>word</th>
+      <th>count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>   hamlet</td>
+      <td> 1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td> dramatis</td>
+      <td> 1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td> personae</td>
+      <td> 1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td> claudius</td>
+      <td> 1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>     king</td>
+      <td> 1</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 2 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">
+In&nbsp;[19]:
+</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="nb">len</span><span class="p">(</span><span class="n">num_words</span><span class="o">.</span><span class="n">word</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">
+    Out[19]:</div>
+
+
+<div class="output_text output_subarea output_pyout">
+<pre>
+4086
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">
+In&nbsp;[32]:
+</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="n">word_count</span> <span class="o">=</span> <span class="n">num_words</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">&#39;word&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s">&#39;count&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">word_count</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">word_count</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">
+    Out[32]:</div>
+
+<div class="output_html rendered_html output_subarea output_pyout">
+<div style="max-height:1000px;max-width:1500px;overflow:auto;">
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>word</th>
+      <th>count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td> the</td>
+      <td> 930</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td> and</td>
+      <td> 843</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>  to</td>
+      <td> 652</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>  of</td>
+      <td> 562</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>   i</td>
+      <td> 517</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 2 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">
+In&nbsp;[41]:
+</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="n">word_count</span><span class="p">[</span><span class="s">&#39;word_length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">word_count</span><span class="p">[</span><span class="s">&#39;word&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">word_count</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">
+    Out[41]:</div>
+
+<div class="output_html rendered_html output_subarea output_pyout">
+<div style="max-height:1000px;max-width:1500px;overflow:auto;">
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>word</th>
+      <th>count</th>
+      <th>word_length</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td> the</td>
+      <td> 930</td>
+      <td> 3</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td> and</td>
+      <td> 843</td>
+      <td> 3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>  to</td>
+      <td> 652</td>
+      <td> 2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>  of</td>
+      <td> 562</td>
+      <td> 2</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>   i</td>
+      <td> 517</td>
+      <td> 1</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 3 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">
+In&nbsp;[45]:
+</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="n">final</span> <span class="o">=</span> <span class="n">word_count</span><span class="p">[</span><span class="n">word_count</span><span class="o">.</span><span class="n">word_length</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">final</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">
+    Out[45]:</div>
+
+<div class="output_html rendered_html output_subarea output_pyout">
+<div style="max-height:1000px;max-width:1500px;overflow:auto;">
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>word</th>
+      <th>count</th>
+      <th>word_length</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0 </th>
+      <td>    the</td>
+      <td> 930</td>
+      <td> 3</td>
+    </tr>
+    <tr>
+      <th>1 </th>
+      <td>    and</td>
+      <td> 843</td>
+      <td> 3</td>
+    </tr>
+    <tr>
+      <th>5 </th>
+      <td>    you</td>
+      <td> 496</td>
+      <td> 3</td>
+    </tr>
+    <tr>
+      <th>9 </th>
+      <td> hamlet</td>
+      <td> 368</td>
+      <td> 6</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>   that</td>
+      <td> 346</td>
+      <td> 4</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 3 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Movies">Movies<a class="anchor-link" href="#Movies">&#182;</a></h2>
+</div>
+</div>
+</div>
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>This is adapted from <a href="http://www.amazon.com/Python-Data-Analysis-Wrangling-IPython/dp/1449319793">Python for Data Analysis</a> by Wes McKinney</p>
 <ul>
 <li>Joining</li>
@@ -1703,22 +2092,6 @@ div#notebook {
 </ul>
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">
-In&nbsp;[1]:
-</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
